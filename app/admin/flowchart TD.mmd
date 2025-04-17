@@ -1,0 +1,24 @@
+flowchart TD
+    subgraph Landing[Landing Page]
+        direction TB
+        Header[("Header (Logo + Navigation)")]
+        Hero["Hero Section
+        - Headline
+        - Search Form"]
+        Features["Features Section
+        - Car Icons
+        - Key Benefits"]
+        Popular["Popular Cars
+        - Car Cards Grid"]
+        CTA["Call to Action
+        - Sign Up Button"]
+        Footer["Footer
+        - Links
+        - Social Media"]
+        
+        Header --> Hero
+        Hero --> Features
+        Features --> Popular
+        Popular --> CTA
+        CTA --> Footer
+    end

@@ -24,6 +24,14 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
@@ -46,6 +54,19 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -58,88 +79,137 @@
   }
 }
 
-/* Custom animations */
-@keyframes float {
+/* Custom Background Patterns and Animations */
+.auth-background {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+  z-index: 0;
+}
+
+.auth-background.dark {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.auth-background.dark::before {
+  background: radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+}
+
+/* Google-style Button */
+.btn-google {
+  @apply relative flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium tracking-wide text-slate-900 dark:text-white bg-white dark:bg-slate-800 rounded-full border border-slate-300 dark:border-slate-700 shadow-sm transition-all duration-300;
+}
+
+.btn-google:hover {
+  @apply border-slate-400 dark:border-slate-600 shadow-md transform scale-[1.02];
+}
+
+.btn-google:active {
+  @apply transform scale-[0.98];
+}
+
+/* Primary Action Button */
+.btn-primary {
+  @apply relative flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium tracking-wide text-white bg-gradient-to-r from-blue-500 to-blue-400 rounded-full shadow-sm transition-all duration-300 hover:from-blue-600 hover:to-blue-500 dark:from-blue-600 dark:to-blue-500 dark:hover:from-blue-700 dark:hover:to-blue-600;
+}
+
+.btn-primary:hover {
+  @apply shadow-md transform scale-[1.02];
+}
+
+.btn-primary:active {
+  @apply transform scale-[0.98];
+}
+
+/* Card styles */
+.auth-card {
+  @apply relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-xl transition-all duration-300;
+}
+
+.auth-card:hover {
+  @apply shadow-2xl border-slate-300 dark:border-slate-700;
+}
+
+/* Input Field Styles */
+.input-google {
+  @apply block w-full px-4 py-2.5 text-slate-900 dark:text-white bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-700 shadow-sm transition-all duration-300;
+}
+
+.input-google:hover {
+  @apply border-slate-400 dark:border-slate-600;
+}
+
+.input-google:focus {
+  @apply outline-none ring-2 ring-blue-500/20 dark:ring-blue-400/20 border-blue-500 dark:border-blue-400;
+}
+
+/* Animated Background Gradient */
+@keyframes gradientShift {
   0% {
-    transform: translateY(0px);
+    background-position: 0% 50%;
   }
   50% {
-    transform: translateY(-10px);
+    background-position: 100% 50%;
   }
   100% {
-    transform: translateY(0px);
+    background-position: 0% 50%;
   }
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+.animated-gradient {
+  background: linear-gradient(-45deg, #3b82f6, #60a5fa, #2563eb, #1d4ed8);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  opacity: 0.05;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
 }
 
-/* Gradient backgrounds */
-.gradient-bg-1 {
-  background: linear-gradient(135deg, hsl(var(--primary) / 0.2) 0%, hsl(var(--background)) 100%);
+/* Hearts animation for the love button */
+.hearts-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.gradient-bg-2 {
-  background: radial-gradient(circle at top right, hsl(var(--primary) / 0.1), transparent 70%),
-    radial-gradient(circle at bottom left, hsl(var(--primary) / 0.05), transparent 70%);
+.heart {
+  position: absolute;
+  font-size: 16px;
+  opacity: 0;
+  animation: float-up 3s ease-in-out forwards;
 }
 
-/* Glass effect */
-.glass-effect {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dark .glass-effect {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Card hover effects */
-.card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-}
-
-.dark .card-hover:hover {
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
-}
-
-/* Pulse animation for map marker */
-@keyframes ping {
-  75%,
-  100% {
-    transform: scale(2);
+@keyframes float-up {
+  0% {
+    transform: translateY(100%);
     opacity: 0;
   }
-}
-
-.animate-ping-slow {
-  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
 }

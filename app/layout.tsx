@@ -5,6 +5,10 @@ import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
 
+export const metadata = {
+  title: "Car Rental App",
+  description: "A modern car rental application",
+}
 
 export default function RootLayout({
   children,
@@ -13,14 +17,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <body className={inter.className} suppressHydrationWarning>
+        <ThemeProvider 
+          attribute="class" 
+          defaultTheme="system" 
+          enableSystem 
+          disableTransitionOnChange
+        >
           {children}
         </ThemeProvider>
       </body>
     </html>
   )
 }
-
-
-import './globals.css'
