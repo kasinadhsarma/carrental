@@ -73,8 +73,21 @@ export default function LoginPage() {
         router.push(redirect)
       } else {
         // Handle admin login
-        localStorage.setItem("userRole", "admin")
-        router.replace("/admin")
+        if (email === "admin@example.com" && password === "admin123") {
+          const mockAdmin = {
+            id: "a1",
+            name: "Admin User",
+            email: email,
+            role: "admin",
+            token: "mock-admin-token",
+          }
+          localStorage.setItem("token", mockAdmin.token)
+          localStorage.setItem("user", JSON.stringify(mockAdmin))
+          localStorage.setItem("userRole", "admin")
+          router.replace("/admin")
+        } else {
+          setError("Invalid admin credentials. Please try again.")
+        }
       }
     } catch (err) {
       setError("Invalid email or password. Please try again.")

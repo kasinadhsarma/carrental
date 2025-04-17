@@ -7,6 +7,13 @@ import type {
   ApiResponse,
 } from "@/types/api"
 
+interface User {
+  id: string
+  name: string
+  email: string
+  role: 'admin' | 'vendor' | 'user'
+}
+
 // Base API URL
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.carrental.com"
 
@@ -110,31 +117,6 @@ export async function verifyOtp(data: OtpVerifyRequest): Promise<ApiResponse<Aut
   return responseData
 }
 
-// Vendor login
-export async function loginAsVendor(phone: string, otp: string): Promise<ApiResponse<AuthResponse>> {
-  const response = await fetch(`${API_URL}/auth/vendor/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ phone, otp }),
-  })
-
-  if (!response.ok) {
-    const error = await response.json()
-    throw new Error(error.message || "Vendor login failed")
-  }
-
-  const data = await response.json()
-
-  if (data.success && data.data?.token) {
-    localStorage.setItem("token", data.data.token)
-    localStorage.setItem("user", JSON.stringify({ ...data.data.user, role: "vendor" }))
-  }
-
-  return data
-}
-
 // Check if user is authenticated
 export function isAuthenticated(): boolean {
   return !!localStorage.getItem("token")
@@ -143,4 +125,33 @@ export function isAuthenticated(): boolean {
 // Get authentication token
 export function getToken(): string | null {
   return localStorage.getItem("token")
+}
+
+// Get current user from token
+export function getCurrentUser(): User | null {
+  const token = getToken()
+  if (!token) return null
+  
+  try {
+    // Decode JWT token (gets middle part between dots and base64 decodes it)
+    const base64Url = token.split('.')[1]
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+    const payload = JSON.parse(window.atob(base64))
+    return payload.user
+  } catch (error) {
+    console.error('Error decoding token:', error)
+    return null
+  }
+}
+
+// Check if current user is admin
+export function isAdmin(): boolean {
+  const user = getCurrentUser()
+  return user?.role === 'admin'
+}
+
+// Check if current user is vendor
+export function isVendor(): boolean {
+  const user = getCurrentUser()
+  return user?.role === 'vendor'
 }

@@ -21,7 +21,7 @@ import {
   Store,
   CreditCard
 } from "lucide-react"
-import { isAuthenticated, isVendor } from "@/lib/auth-service"
+import { isAuthenticated, isVendor, logout } from "@/lib/auth-service"
 
 interface VendorLayoutProps {
   children: React.ReactNode
@@ -101,7 +101,7 @@ export default function VendorLayout({ children }: VendorLayoutProps) {
               ))}
             </nav>
             <div className="border-t p-4">
-              <Button variant="outline" className="w-full justify-start" size="sm">
+              <Button variant="outline" className="w-full justify-start" size="sm" onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Logout
               </Button>
@@ -150,6 +150,12 @@ export default function VendorLayout({ children }: VendorLayoutProps) {
                 </Link>
               ))}
             </nav>
+            <div className="border-t p-4">
+              <Button variant="outline" className="w-full justify-start" size="sm" onClick={logout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </div>

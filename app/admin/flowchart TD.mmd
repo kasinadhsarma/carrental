@@ -1,24 +1,123 @@
 flowchart TD
-    subgraph Landing[Landing Page]
-        direction TB
-        Header[("Header (Logo + Navigation)")]
-        Hero["Hero Section
-        - Headline
-        - Search Form"]
-        Features["Features Section
-        - Car Icons
-        - Key Benefits"]
-        Popular["Popular Cars
-        - Car Cards Grid"]
-        CTA["Call to Action
-        - Sign Up Button"]
-        Footer["Footer
-        - Links
-        - Social Media"]
+    subgraph Admin["Admin Dashboard"]
+        A[Admin Login] --> B{Authentication}
+        B -->|Success| C[Dashboard Home]
+        B -->|Failure| A
         
-        Header --> Hero
-        Hero --> Features
-        Features --> Popular
-        Popular --> CTA
-        CTA --> Footer
+        C --> D[Cars Management]
+        C --> E[Users Management]
+        C --> F[Bookings Management]
+        C --> G[Settings]
+        
+        subgraph Cars["Cars Section"]
+            D --> D1[List Cars]
+            D --> D2[Add Car]
+            D --> D3[Edit Car]
+            D --> D4[Delete Car]
+            
+            D1 --> D1a[Filter Cars]
+            D1 --> D1b[Search Cars]
+            D1 --> D1c[Export Data]
+            
+            D2 --> D2a[Upload Images]
+            D2 --> D2b[Set Details]
+            D2 --> D2c[Set Pricing]
+            
+            D3 --> D3a[Update Status]
+            D3 --> D3b[Update Details]
+            D3 --> D3c[Manage Images]
+        end
+        
+        subgraph Users["Users Section"]
+            E --> E1[List Users]
+            E --> E2[Add User]
+            E --> E3[Edit User]
+            E --> E4[Manage Roles]
+            
+            E1 --> E1a[Filter Users]
+            E1 --> E1b[Search Users]
+            E1 --> E1c[Export Data]
+            
+            E4 --> E4a[Assign Role]
+            E4 --> E4b[Remove Role]
+            E4 --> E4c[Custom Permissions]
+        end
+        
+        subgraph Bookings["Bookings Section"]
+            F --> F1[Active Bookings]
+            F --> F2[Booking History]
+            F --> F3[Manage Booking]
+            F --> F4[Generate Reports]
+            
+            F1 --> F1a[Filter Active]
+            F1 --> F1b[Track Status]
+            F1 --> F1c[Update Status]
+            
+            F2 --> F2a[Search History]
+            F2 --> F2b[Export History]
+            
+            F3 --> F3a[View Details]
+            F3 --> F3b[Cancel Booking]
+            F3 --> F3c[Process Refund]
+            
+            F4 --> F4a[Daily Reports]
+            F4 --> F4b[Monthly Reports]
+            F4 --> F4c[Custom Reports]
+        end
+        
+        subgraph Settings["System Settings"]
+            G --> G1[General Settings]
+            G --> G2[Payment Settings]
+            G --> G3[Email Settings]
+            G --> G4[API Settings]
+            
+            G1 --> G1a[Site Settings]
+            G1 --> G1b[Localization]
+            G1 --> G1c[Maintenance Mode]
+            
+            G2 --> G2a[Payment Methods]
+            G2 --> G2b[Currency Settings]
+            G2 --> G2c[Tax Settings]
+            
+            G3 --> G3a[SMTP Config]
+            G3 --> G3b[Templates]
+            G3 --> G3c[Notifications]
+            
+            G4 --> G4a[API Keys]
+            G4 --> G4b[Webhooks]
+            G4 --> G4c[Rate Limits]
+        end
+    end
+    
+    %% Actions and State Management
+    subgraph Actions["Common Actions"]
+        X1[View] --> Y1[Edit]
+        Y1 --> Z1[Save]
+        Z1 --> W1[Publish]
+        
+        X2[Create] --> Y2[Draft]
+        Y2 --> Z2[Review]
+        Z2 --> W2[Approve]
+    end
+    
+    %% Data Flow
+    subgraph DataFlow["Data Processing"]
+        DB[(Database)]
+        API[API Layer]
+        Cache[Cache Layer]
+        
+        API --> DB
+        API --> Cache
+        Cache --> API
+    end
+    
+    %% Notifications
+    subgraph Notifications["System Notifications"]
+        N1[Email]
+        N2[In-App]
+        N3[SMS]
+        
+        Event[System Event] --> N1
+        Event --> N2
+        Event --> N3
     end

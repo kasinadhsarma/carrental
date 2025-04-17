@@ -1,128 +1,152 @@
 "use client"
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import * as React from "react"
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { Menu, X, Car, Info, PhoneCall, LogIn, ChevronRight } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
+import Link from "next/link"
+import { motion } from "framer-motion"
 import { ThemeToggle } from "@/components/theme-toggle"
-import {
-  CarFront,
-  Home,
-  Car,
-  Info,
-  Phone,
-  User,
-  LogIn,
-  LogOut,
-  Settings,
-  Calendar,
-  Map,
-  Clock,
-  LayoutDashboard,
-  Users,
-  FileText,
-  Store,
-} from "lucide-react"
 
-interface MobileNavProps {
-  isAuthenticated: boolean
-  isVendor: boolean
-  isAdmin: boolean
-  onLogout: () => void
+const menuItems = [
+  { href: "/about", icon: Info, label: "About Us" },
+  { href: "/contact", icon: PhoneCall, label: "Contact" },
+] as const
+
+// Move animations outside component
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      duration: 0.4,
+      ease: "easeOut"
+    }
+  }
 }
 
-export function MobileNav({ isAuthenticated, isVendor, isAdmin, onLogout }: MobileNavProps) {
-  const pathname = usePathname()
+const itemAnimation = {
+  hidden: { x: -30, opacity: 0 },
+  show: { 
+    x: 0, 
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 12
+    }
+  }
+}
+
+export const MobileNav = React.memo(function MobileNav() {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const animationStateRef = React.useRef({ removed: false })
+
+  // Reset animation state when menu opens
+  React.useEffect(() => {
+    if (isOpen) {
+      animationStateRef.current.removed = false;
+    }
+  }, [isOpen]);
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   return (
-    <div className="flex h-full flex-col bg-background">
-      <div className="flex h-16 items-center justify-between border-b px-4">
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-          <CarFront className="h-6 w-6 text-primary" />
-          <span>CarRental</span>
-        </Link>
-        <ThemeToggle />
-      </div>
-      <ScrollArea className="flex-1 px-2 py-4">
-        <div className="flex flex-col gap-2">
-          {isAdmin && (
-            <>
-              <div className="mt-4 mb-2 px-2 text-xs font-semibold text-muted-foreground">Admin</div>
-              <Link href="/admin">
-                <Button variant={pathname === "/admin" ? "default" : "ghost"} className="w-full justify-start gap-2">
-                  <LayoutDashboard className="h-4 w-4" />
-                  Dashboard
-                </Button>
-              </Link>
-              <Link href="/admin/users">
-                <Button variant={pathname === "/admin/users" ? "default" : "ghost"} className="w-full justify-start gap-2">
-                  <Users className="h-4 w-4" />
-                  Users
-                </Button>
-              </Link>
-              <Link href="/admin/cars">
-                <Button variant={pathname === "/admin/cars" ? "default" : "ghost"} className="w-full justify-start gap-2">
-                  <Car className="h-4 w-4" />
-                  Cars
-                </Button>
-              </Link>
-              <Link href="/admin/settings">
-                <Button variant={pathname === "/admin/settings" ? "default" : "ghost"} className="w-full justify-start gap-2">
-                  <Settings className="h-4 w-4" />
-                  Settings
-                </Button>
-              </Link>
-            </>
-          )}
-
-          {isVendor && (
-            <>
-              <div className="mt-4 mb-2 px-2 text-xs font-semibold text-muted-foreground">Vendor</div>
-              <Link href="/vendor/dashboard">
-                <Button variant={pathname === "/vendor/dashboard" ? "default" : "ghost"} className="w-full justify-start gap-2">
-                  <LayoutDashboard className="h-4 w-4" />
-                  Dashboard
-                </Button>
-              </Link>
-              <Link href="/vendor/cars">
-                <Button variant={pathname === "/vendor/cars" ? "default" : "ghost"} className="w-full justify-start gap-2">
-                  <Car className="h-4 w-4" />
-                  Cars
-                </Button>
-              </Link>
-              <Link href="/vendor/profile">
-                <Button variant={pathname === "/vendor/profile" ? "default" : "ghost"} className="w-full justify-start gap-2">
-                  <User className="h-4 w-4" />
-                  Profile
-                </Button>
-              </Link>
-            </>
-          )}
-
-          {!isAuthenticated ? (
-            <>
-              <div className="mt-4 mb-2 px-2 text-xs font-semibold text-muted-foreground">Account</div>
-              <Link href="/auth/login">
-                <Button variant={pathname === "/auth/login" ? "default" : "ghost"} className="w-full justify-start gap-2">
-                  <LogIn className="h-4 w-4" />
-                  Admin/Vendor Login
-                </Button>
-              </Link>
-              <Link href="/vendor/register">
-                <Button variant={pathname === "/vendor/register" ? "default" : "ghost"} className="w-full justify-start gap-2">
-                  <FileText className="h-4 w-4" />
-                  Register as Vendor
-                </Button>
-              </Link>
-            </>
-          ) : (
-            <Button variant="ghost" className="w-full justify-start gap-2 mt-4" onClick={onLogout}>
-              <LogOut className="h-4 w-4" />
-              Logout
-            </Button>
-          )}
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" className="md:hidden" size="icon">
+          <Menu className="h-5 w-5" />
+          <span className="sr-only">Toggle navigation menu</span>
+        </Button>
+      </SheetTrigger>
+      <SheetContent
+        side="right"
+        className="flex flex-col w-80 p-0 bg-background/95 backdrop-blur-sm"
+        onPointerDownOutside={(e) => {
+          e.preventDefault();
+          handleClose();
+        }}
+        onEscapeKeyDown={handleClose}
+        hideCloseButton={true}
+      >
+        <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+        <div className="flex items-center justify-between p-6 border-b">
+          <Link href="/" className="flex items-center gap-2">
+            <Car className="h-6 w-6 text-primary" />
+            <span className="font-bold text-xl">RentACar</span>
+          </Link>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="rounded-full hover:bg-accent"
+            aria-label="Close navigation menu"
+            onClick={handleClose}
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </div>
-      </ScrollArea>
-    </div>
+
+        <div className="flex-1 overflow-y-auto">
+          <div className="px-6 py-4">
+            <motion.nav
+              variants={container}
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+              className="flex flex-col gap-2"
+            >
+              {menuItems.map((item) => (              <motion.div key={item.href} variants={itemAnimation}>
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-accent transition-all duration-300 ease-in-out"
+                  >
+                    <item.icon className="h-5 w-5 text-muted-foreground" />
+                    {item.label}
+                    <ChevronRight className="h-4 w-4 ml-auto text-muted-foreground" />
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.nav>
+          </div>
+        </div>
+
+        <div className="border-t">
+          <div className="p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Theme</span>
+              <ThemeToggle />
+            </div>
+            <Separator className="my-4" />
+            <div className="grid gap-4">
+              {/* Updated Sign In button to match OTP style */}
+              <Link href="/auth/login" className="w-full">
+                <Button 
+                  variant="outline" 
+                  className="w-full py-3 flex items-center justify-center rounded-lg text-base font-medium border border-gray-300 hover:bg-accent/50"
+                >
+                  <LogIn className="h-4 w-4 mr-2" />
+                  Sign In
+                </Button>
+              </Link>
+              
+              {/* Updated Book Now button to match OTP style */}
+              <Link href="/auth/signup" className="w-full">
+                <Button 
+                  className="w-full py-3 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-base font-medium shadow-sm"
+                >
+                  Book Now
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
   )
-}
+})
+
+MobileNav.displayName = 'MobileNav'

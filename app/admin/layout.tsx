@@ -4,7 +4,8 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { isAuthenticated, logout } from "@/lib/auth-service"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import {
@@ -27,14 +28,19 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const pathname = usePathname()
+  const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mounted, setMounted] = useState(false)
 
-  // Hydration fix
   useEffect(() => {
     setMounted(true)
-  }, [])
+    // Check admin authentication
+    if (!isAuthenticated()) {
+      router.replace("/auth/login?redirect=/admin")
+      return
+    }
+  }, [router])
 
   const navigation = [
     { name: "Dashboard", href: "/admin", icon: BarChart },
@@ -93,7 +99,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               ))}
             </nav>
             <div className="border-t p-4">
-              <Button variant="outline" className="w-full justify-start" size="sm">
+              <Button variant="outline" className="w-full justify-start" size="sm" onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Logout
               </Button>
@@ -147,6 +153,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 variant="outline"
                 className={`w-full ${sidebarCollapsed ? "justify-center" : "justify-start"}`}
                 size="sm"
+                onClick={logout}
               >
                 <LogOut className={`${sidebarCollapsed ? "" : "mr-2"} h-4 w-4`} />
                 {!sidebarCollapsed && <span>Logout</span>}
