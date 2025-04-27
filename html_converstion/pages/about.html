@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Car Rental</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-background text-foreground">
+    <!-- Header will be dynamically loaded -->
+    <div id="header"></div>
+
+    <main class="container py-12">
+        <section class="max-w-4xl mx-auto">
+            <h1 class="text-4xl font-bold mb-8">About Us</h1>
+            <div class="prose dark:prose-invert">
+                <p class="text-lg mb-6">
+                    Welcome to CarRental, your premier destination for luxury and comfortable car rentals.
+                    We pride ourselves on providing exceptional service and a wide selection of vehicles
+                    to meet your transportation needs.
+                </p>
+                <h2 class="text-2xl font-semibold mb-4">Our Mission</h2>
+                <p class="mb-6">
+                    To provide reliable, comfortable, and affordable car rental services while ensuring
+                    the highest level of customer satisfaction through our commitment to quality and service excellence.
+                </p>
+                <h2 class="text-2xl font-semibold mb-4">Why Choose Us?</h2>
+                <ul class="list-disc pl-6 mb-6">
+                    <li>Wide selection of quality vehicles</li>
+                    <li>Competitive pricing</li>
+                    <li>24/7 customer support</li>
+                    <li>Flexible rental options</li>
+                    <li>Nationwide coverage</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer will be dynamically loaded -->
+    <div id="footer"></div>
+
+    <script src="../js/theme.js"></script>
+    <script>
+        // Load header and footer
+        fetch('../components/header.html')
+            .then(response => response.text())
+            .then(html => document.getElementById('header').innerHTML = html);
+        
+        fetch('../components/footer.html')
+            .then(response => response.text())
+            .then(html => document.getElementById('footer').innerHTML = html);
+    </script>
+</body>
+</html>

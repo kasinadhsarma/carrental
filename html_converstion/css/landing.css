@@ -1,0 +1,104 @@
+/* Theme transition styles */
+.theme-transition {
+    transition: background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Theme specific hero section styles */
+.hero-section {
+    background: linear-gradient(to bottom right, 
+        hsl(var(--primary)/0.1), 
+        hsl(var(--primary)/0.05), 
+        hsl(var(--background)));
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .hero-section {
+    background: linear-gradient(to bottom right, 
+        hsl(var(--primary)/0.15), 
+        hsl(var(--primary)/0.05), 
+        hsl(var(--background)));
+}
+
+/* Theme specific feature card styles */
+.feature-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--card-foreground));
+}
+
+[data-theme="dark"] .feature-card {
+    background: hsl(var(--card)/0.8);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+/* Theme toggle button styles */
+#theme-toggle {
+    position: relative;
+}
+
+#theme-toggle .light-icon,
+#theme-toggle .dark-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#theme-toggle .light-icon {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg);
+}
+
+#theme-toggle .dark-icon {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+[data-theme="dark"] #theme-toggle .light-icon {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+[data-theme="dark"] #theme-toggle .dark-icon {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* CTA section theme specific styles */
+.cta-section {
+    background: linear-gradient(to bottom right, 
+        hsl(var(--primary)), 
+        hsl(var(--primary)/0.9));
+}
+
+[data-theme="dark"] .cta-section {
+    background: linear-gradient(to bottom right, 
+        hsl(var(--primary)/0.8), 
+        hsl(var(--primary)/0.7));
+}
+
+/* Theme specific image styles */
+img {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+[data-theme="dark"] img {
+    opacity: 0.9;
+}
+
+/* Feature icon theme styles */
+.feature-icon {
+    background: hsl(var(--primary)/0.1);
+    transition: background-color 0.3s ease;
+}
+
+[data-theme="dark"] .feature-icon {
+    background: hsl(var(--primary)/0.2);
+}
